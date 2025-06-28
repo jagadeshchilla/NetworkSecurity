@@ -19,7 +19,22 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import r2_score
 from sklearn.neighbors import KNeighborsClassifier
 import mlflow
+import mlflow.sklearn
+import dagshub
+import os
 
+# Initialize DagsHub and MLflow
+dagshub.init(repo_owner='jagadeshchilla', repo_name='phishing-detecting', mlflow=True)
+
+# Set MLflow tracking URI and experiment
+mlflow.set_tracking_uri("https://dagshub.com/jagadeshchilla/phishing-detecting.mlflow")
+experiment_name = "phishing-detection-experiment"
+try:
+    # Try to create experiment, if it exists, it will just get the existing one
+    experiment = mlflow.set_experiment(experiment_name)
+    logging.info(f"MLflow experiment '{experiment_name}' is ready")
+except Exception as e:
+    logging.warning(f"Could not set experiment: {e}")
 
 
 class ModelTrainer:
@@ -31,28 +46,45 @@ class ModelTrainer:
         except Exception as e:
             raise NetworkSecurityException(e,sys) from e
 
-    def track_mlflow(self,model,classification_train_metric,classification_test_metric):
-        with mlflow.start_run():
-            # Log training metrics
-            train_f1_score=classification_train_metric.f1_score
-            train_precision=classification_train_metric.precision_score
-            train_recall=classification_train_metric.recall_score
+    def track_mlflow(self,model,classification_train_metric,classification_test_metric,model_name):
+        try:
+            with mlflow.start_run(run_name=f"phishing_detection_{model_name}"):
+                # Log model name as a parameter
+                mlflow.log_param("model_name", model_name)
+                mlflow.log_param("model_type", type(model).__name__)
+                
+                # Log training metrics
+                train_f1_score=classification_train_metric.f1_score
+                train_precision=classification_train_metric.precision_score
+                train_recall=classification_train_metric.recall_score
 
-            mlflow.log_metric("train_f1_score",train_f1_score)
-            mlflow.log_metric("train_precision",train_precision)
-            mlflow.log_metric("train_recall",train_recall)
-            
-            # Log test metrics
-            test_f1_score=classification_test_metric.f1_score
-            test_precision=classification_test_metric.precision_score
-            test_recall=classification_test_metric.recall_score
+                mlflow.log_metric("train_f1_score",train_f1_score)
+                mlflow.log_metric("train_precision",train_precision)
+                mlflow.log_metric("train_recall",train_recall)
+                
+                # Log test metrics
+                test_f1_score=classification_test_metric.f1_score
+                test_precision=classification_test_metric.precision_score
+                test_recall=classification_test_metric.recall_score
 
-            mlflow.log_metric("test_f1_score",test_f1_score)
-            mlflow.log_metric("test_precision",test_precision)
-            mlflow.log_metric("test_recall",test_recall)
-            
-            # Log the model
-            mlflow.sklearn.log_model(model,"model")
+                mlflow.log_metric("test_f1_score",test_f1_score)
+                mlflow.log_metric("test_precision",test_precision)
+                mlflow.log_metric("test_recall",test_recall)
+                
+                # Log additional metrics
+                mlflow.log_metric("f1_score_diff", train_f1_score - test_f1_score)
+                
+                # Log the model
+                mlflow.sklearn.log_model(
+                    sk_model=model,
+                    artifact_path="model",
+                    registered_model_name=f"phishing_detection_{model_name}"
+                )
+                
+                logging.info(f"Successfully logged {model_name} to MLflow")
+                
+        except Exception as e:
+            logging.warning(f"Failed to log to MLflow: {e}. Continuing with model training.")
 
     def train_model(self,x_train,y_train,x_test,y_test):
 
@@ -97,7 +129,7 @@ class ModelTrainer:
         classification_test_metric=get_classification_score(y_true=y_test,y_pred=y_test_pred)
         
         ##Track the mlflow
-        self.track_mlflow(best_model,classification_train_metric,classification_test_metric)
+        self.track_mlflow(best_model,classification_train_metric,classification_test_metric,best_model_name)
         preprocessor=load_object(file_path=self.data_transformation_artifact.transformed_object_file_path)
         model_dir_path=os.path.dirname(self.model_trainer_config.trained_model_file_path)
         os.makedirs(model_dir_path,exist_ok=True)
@@ -105,6 +137,7 @@ class ModelTrainer:
         Network_model=NetworkModel(preprocessor=preprocessor,model=best_model)
         save_object(file_path=self.model_trainer_config.trained_model_file_path,obj=Network_model)
 
+        save_object("final_model/model.pkl",best_model)
         ## Model Trainer Artifact
         model_trainer_artifact=ModelTrainerArtifact(
             trained_model_file_path=self.model_trainer_config.trained_model_file_path,

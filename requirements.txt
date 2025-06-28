@@ -4,7 +4,9 @@ numpy
 pymongo[srv]>=4.0.0
 certifi
 scikit-learn
-mlflow==1.30.0
-dagshub
+mlflow==2.8.1
+dagshub==0.3.47
 pyaml
+fastapi
+uvicorn
 # -e .
