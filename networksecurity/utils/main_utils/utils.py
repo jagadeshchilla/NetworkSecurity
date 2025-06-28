@@ -30,3 +30,48 @@ def write_yaml_file(file_path:str,content:object,replace:bool=False)->None:
             yaml.dump(content,file)
     except Exception as e:
         raise NetworkSecurityException(e,sys) from e
+    
+
+def save_numpy_array_data(file_path:str,array:np.array)->None:
+    """
+    Save numpy array data to a file.
+    """
+    try:
+        dir_path=os.path.dirname(file_path)
+        os.makedirs(dir_path,exist_ok=True)
+        with open(file_path,"wb") as file_obj:
+            np.save(file_obj,array)
+    except Exception as e:
+        raise NetworkSecurityException(e,sys) from e
+    
+def save_object(file_path:str,obj:object)->None:
+    """
+    Save object data to a file.
+    """
+    try:
+        dir_path=os.path.dirname(file_path)
+        os.makedirs(dir_path,exist_ok=True)
+        with open(file_path,"wb") as file_obj:
+            pickle.dump(obj,file_obj)
+    except Exception as e:
+        raise NetworkSecurityException(e,sys) from e
+    
+def load_object(file_path:str)->object:
+    """
+    Load object data from a file.
+    """
+    try:
+        with open(file_path,"rb") as file_obj:
+            return pickle.load(file_obj)
+    except Exception as e:
+        raise NetworkSecurityException(e,sys) from e
+    
+def load_numpy_array_data(file_path:str)->np.array:
+    """
+    Load numpy array data from a file.
+    """
+    try:
+        with open(file_path,"rb") as file_obj:
+            return np.load(file_obj)
+    except Exception as e:
+        raise NetworkSecurityException(e,sys) from e
