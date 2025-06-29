@@ -88,7 +88,7 @@ jobs:
         run: |
          docker pull ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest || echo "No previous image found, this might be the first deployment"
          
-      - name: Stop and remove container if running
+      - name: Stop and remove container if running docker
         run: |
          docker ps -q --filter "name=networksecurity" | grep -q . && docker stop networksecurity && docker rm -fv networksecurity || echo "No running container found"
        
