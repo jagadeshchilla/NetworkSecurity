@@ -7,7 +7,6 @@
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=flat&logo=amazon-aws&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=flat&logo=mongodb&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 **An end-to-end machine learning solution for detecting phishing websites using advanced feature engineering and automated deployment pipeline.**
 
@@ -33,7 +32,6 @@
 - [🧪 Testing](#-testing)
 - [📁 Project Structure](#-project-structure)
 - [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
 
 ---
 
@@ -815,21 +813,6 @@ git push origin feature/amazing-feature
 ### 🏆 Contributors
 
 Thanks to all contributors who have helped improve this project!
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-### 📜 License Summary
-
-- ✅ **Commercial use** allowed
-- ✅ **Modification** allowed
-- ✅ **Distribution** allowed
-- ✅ **Private use** allowed
-- ❌ **Liability** not provided
-- ❌ **Warranty** not provided
 
 ---
 
