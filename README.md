@@ -348,6 +348,69 @@ graph TD
 
 ### 4. 🤖 Model Training
 
+```mermaid
+graph TD
+    A["📋 Model Trainer Config"] --> B["🚀 Initiate Model Training"]
+    C["📊 Data Transformation Artifact"] --> D["📁 Transformed"]
+    
+    D --> E["📄 train.npy"]
+    D --> F["📄 test.npy"]
+    D --> G["📄 transformed object"]
+    
+    B --> H["📖 Load numpy array data"]
+    
+    H --> I["📊 Train Array"]
+    H --> J["📊 Test Array"]
+    
+    I --> K["🎯 X train array"]
+    I --> L["🎯 y train array"]
+    J --> M["🎯 X test array"]
+    J --> N["🎯 y test array"]
+    
+    subgraph "🤖 Model Factory"
+        O["🏭 Model Factory"]
+        O --> P["🔍 get best model"]
+    end
+    
+    K --> O
+    L --> O
+    M --> O
+    N --> O
+    
+    P --> Q{"📊 best score > Expected Accuracy"}
+    
+    Q -->|False| R["❌ No Best model found with score more than base score"]
+    Q -->|True| S["✅ best score"]
+    
+    S --> T["📊 best model detail"]
+    T --> U["🤖 best model"]
+    U --> V["📊 calculate metric"]
+    
+    V --> W["📄 preprocessing.pkl"]
+    
+    R --> X["📁 Trained model file path"]
+    S --> Y["💾 Network Model"]
+    Y --> Z["📄 Load Object"]
+    Z --> AA["📄 Save Object"]
+    AA --> BB["📄 model.pkl"]
+    
+    V --> CC["📊 metric artifact"]
+    BB --> DD["📋 Model Trainer Artifact"]
+    CC --> DD
+    
+    style A fill:#e8f5e8
+    style B fill:#fff3cd
+    style O fill:#d4edda
+    style P fill:#ff9800
+    style Q fill:#2196f3
+    style R fill:#f44336
+    style S fill:#4caf50
+    style Y fill:#9c27b0
+    style DD fill:#673ab7
+```
+
+**Model Training Process:**
+
 ```python
 # Multiple algorithms comparison
 models = {
@@ -360,10 +423,13 @@ models = {
 ```
 
 **Model Selection Process:**
-- Cross-validation with multiple algorithms
-- Hyperparameter tuning using GridSearchCV
-- Performance comparison using F1-score
-- Best model selection and persistence
+- **Model Factory**: Automated model comparison and selection
+- **Cross-validation**: Multiple algorithms evaluation
+- **Hyperparameter tuning**: GridSearchCV optimization
+- **Performance comparison**: F1-score based selection
+- **Threshold validation**: Expected accuracy requirements
+- **Best model persistence**: Serialization and artifact creation
+- **Network Model**: Custom model wrapper with preprocessor
 
 ### 5. 📊 Model Evaluation
 
