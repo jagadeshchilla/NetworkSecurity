@@ -10,7 +10,7 @@
 
 **An end-to-end machine learning solution for detecting phishing websites using advanced feature engineering and automated deployment pipeline.**
 
-[🚀 Live Demo](http://44.201.163.184:8080) • [📖 Documentation](http://44.201.163.184:8080/docs) • [🔧 API Reference](http://44.201.163.184:8080/docs)
+[📖 Documentation](#-project-overview) • [🏗️ Architecture](#️-architecture) • [🚀 Deployment Guide](#-deployment)
 
 </div>
 
@@ -1082,27 +1082,9 @@ Thanks to all contributors who have helped improve this project!
 
 ---
 
-## 📞 Contact & Support
+## ⚠️ Important Note
 
-### 👨‍💻 Project Maintainer
-
-**Jagadesh Chilla**
-- 🐙 GitHub: [@jagadeshchilla](https://github.com/jagadeshchilla)
-- 📧 Email: chillajagadesh68@gmail.com
-- 💼 LinkedIn: [Jagadesh Chilla](https://linkedin.com/in/jagadesh-chilla)
-
-### 🆘 Getting Help
-
-- **📖 Documentation**: Check this README and API docs
-- **🐛 Issues**: [Create an issue](https://github.com/jagadeshchilla/phishing-detecting/issues)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/jagadeshchilla/phishing-detecting/discussions)
-- **📧 Email**: For private inquiries
-
-### 🚀 Live Application
-
-- **🌐 Application**: [http://44.201.163.184:8080](http://44.201.163.184:8080)
-- **📚 API Docs**: [http://44.201.163.184:8080/docs](http://44.201.163.184:8080/docs)
-- **🔧 Health Check**: [http://44.201.163.184:8080/](http://44.201.163.184:8080/)
+> **AWS Resources Status**: The AWS EC2 instance, S3 buckets, and other cloud resources have been deleted due to AWS free tier limitations. The project code and architecture remain fully functional and can be deployed on any cloud platform. All deployment configurations and CI/CD pipelines are ready for redeployment when needed.
 
 ---
 
@@ -1121,28 +1103,3 @@ Thanks to all contributors who have helped improve this project!
 *Protecting the web, one URL at a time* 🛡️
 
 </div>
-
----
-
-## 📊 Project Statistics
-
-![GitHub stars](https://img.shields.io/github/stars/jagadeshchilla/phishing-detecting?style=social)
-![GitHub forks](https://img.shields.io/github/forks/jagadeshchilla/phishing-detecting?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/jagadeshchilla/phishing-detecting?style=social)
-![GitHub last commit](https://img.shields.io/github/last-commit/jagadeshchilla/phishing-detecting)
-![GitHub code size](https://img.shields.io/github/languages/code-size/jagadeshchilla/phishing-detecting)
-![GitHub repo size](https://img.shields.io/github/repo-size/jagadeshchilla/phishing-detecting)
-2. **Continuous Delivery**: Docker image building and ECR push
-3. **Continuous Deployment**: Automated deployment to EC2
-
----
-
-*This is Part 1 of the README. The content is quite extensive, so I'll continue with the remaining sections in the next part to maintain readability and organization.*
-
-**Continue to [Part 2](README_part2.md) for:**
-- 📈 Model Performance
-- 🔌 API Usage
-- 🧪 Testing
-- 📁 Project Structure
-- 🤝 Contributing
-- 📄 License
