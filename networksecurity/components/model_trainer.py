@@ -23,18 +23,27 @@ import mlflow.sklearn
 import dagshub
 import os
 
-# Initialize DagsHub and MLflow
-dagshub.init(repo_owner='jagadeshchilla', repo_name='phishing-detecting', mlflow=True)
+# Initialize DagsHub and MLflow (only if not in production/Docker environment)
+MLFLOW_ENABLED = os.getenv('MLFLOW_ENABLED', 'false').lower() == 'true'
 
-# Set MLflow tracking URI and experiment
-mlflow.set_tracking_uri("https://dagshub.com/jagadeshchilla/phishing-detecting.mlflow")
-experiment_name = "phishing-detection-experiment"
-try:
-    # Try to create experiment, if it exists, it will just get the existing one
-    experiment = mlflow.set_experiment(experiment_name)
-    logging.info(f"MLflow experiment '{experiment_name}' is ready")
-except Exception as e:
-    logging.warning(f"Could not set experiment: {e}")
+if MLFLOW_ENABLED:
+    try:
+        dagshub.init(repo_owner='jagadeshchilla', repo_name='phishing-detecting', mlflow=True)
+        # Set MLflow tracking URI and experiment
+        mlflow.set_tracking_uri("https://dagshub.com/jagadeshchilla/phishing-detecting.mlflow")
+        experiment_name = "phishing-detection-experiment"
+        try:
+            # Try to create experiment, if it exists, it will just get the existing one
+            experiment = mlflow.set_experiment(experiment_name)
+            logging.info(f"MLflow experiment '{experiment_name}' is ready")
+        except Exception as e:
+            logging.warning(f"Could not set experiment: {e}")
+            MLFLOW_ENABLED = False
+    except Exception as e:
+        logging.warning(f"Could not initialize DagsHub/MLflow: {e}. Continuing without MLflow tracking.")
+        MLFLOW_ENABLED = False
+else:
+    logging.info("MLflow tracking disabled (production mode)")
 
 
 class ModelTrainer:
@@ -47,6 +56,10 @@ class ModelTrainer:
             raise NetworkSecurityException(e,sys) from e
 
     def track_mlflow(self,model,classification_train_metric,classification_test_metric,model_name):
+        if not MLFLOW_ENABLED:
+            logging.info(f"MLflow tracking disabled, skipping logging for {model_name}")
+            return
+            
         try:
             with mlflow.start_run(run_name=f"phishing_detection_{model_name}"):
                 # Log model name as a parameter
