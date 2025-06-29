@@ -123,6 +123,38 @@ graph LR
 
 ### 1. 📥 Data Ingestion
 
+```mermaid
+graph TD
+    A["📋 Data Ingestion Config"] --> B["🚀 Initiate Data Ingestion"]
+    
+    C["📄 Schema File (JSON)"] --> D["🔧 Config"]
+    
+    B --> E["📤 Export Data to Feature Store"]
+    
+    F["🗄️ MongoDB"] --> G["💾 jagadesh"]
+    G --> H["📊 Feature Store"]
+    H --> I["📁 Raw CSV"]
+    
+    E --> J["📋 Data Ingestion Artifact"]
+    
+    K["🗂️ Drop Columns"] --> L["📊 Split Data as train and test"]
+    
+    J --> M["📁 Feature Store (Time Stamp)"]
+    M --> N["📄 test.csv"]
+    
+    J --> O["📁 Ingested (Time Stamp)"]
+    O --> P["📄 train.csv"]
+    
+    style A fill:#e8f5e8
+    style B fill:#fff3cd
+    style E fill:#d4edda
+    style G fill:#ff9800
+    style H fill:#2196f3
+    style J fill:#9c27b0
+```
+
+**Data Ingestion Process:**
+
 ```python
 # Data sources and ingestion process
 - MongoDB Atlas: Production data storage
@@ -134,6 +166,8 @@ graph LR
 - Automated data collection from multiple sources
 - Data validation and schema enforcement
 - Error handling and retry mechanisms
+- Feature store management with timestamps
+- Automatic train-test split generation
 
 ### 2. ✅ Data Validation
 
