@@ -252,19 +252,99 @@ graph TD
 
 ### 3. 🔄 Data Transformation
 
+```mermaid
+graph TD
+    A["📋 Data Transformation Config"] --> B["🚀 Initiate Data Transformation"]
+    C["📊 Data Validation Artifact"] --> D["📁 Ingested"]
+    
+    D --> E["📄 train.csv"]
+    D --> F["📄 test.csv"]
+    
+    B --> G["📖 Read Data"]
+    
+    subgraph "🔄 DATA TRANSFORMATION"
+        H["🔧 Pipeline"]
+        I["🤖 Robust Scaler ✓"]
+        J["📊 Simple Imputer"]
+        K["🧪 Test DataFrame"]
+        
+        H --> I
+        I --> J
+        J --> K
+    end
+    
+    subgraph "📊 Handling Missing Values"
+        L["🎯 Drop Target Column"]
+        M["🔧 Preprocessor Object"]
+        N["🎯 Input Feature Train DataFrame"]
+        O["🎯 Target Feature Train DataFrame"]
+        P["🎯 Input Feature Test DataFrame"]
+        Q["🎯 Target Feature Test DataFrame"]
+        
+        L --> M
+        M --> N
+        M --> O
+        M --> P
+        M --> Q
+    end
+    
+    subgraph "🔄 fit-transform"
+        R["🎯 Input Feature Train Final"]
+        S["🎯 Target Feature Train Final"]
+        T["🎯 Input Feature Test Final"]
+        U["🎯 Target Feature Test Final"]
+        
+        R --> V["📊 Concat"]
+        S --> W["📊 Concat"]
+        T --> X["📊 Concat"]
+        U --> Y["📊 Concat"]
+        
+        V --> Z["📊 Train Array"]
+        W --> Z
+        X --> AA["📊 Test Array"]
+        Y --> AA
+    end
+    
+    G --> H
+    E --> L
+    F --> L
+    
+    Z --> BB["📁 Data Transformation Artifacts"]
+    AA --> BB
+    M --> CC["📄 preprocessing.pkl"]
+    
+    BB --> DD["📁 Artifacts"]
+    CC --> DD
+    
+    DD --> EE["📄 train.npy"]
+    DD --> FF["📄 test.npy"]
+    
+    style A fill:#e8f5e8
+    style B fill:#fff3cd
+    style H fill:#d4edda
+    style M fill:#ff9800
+    style BB fill:#9c27b0
+    style CC fill:#2196f3
+```
+
+**Data Transformation Process:**
+
 ```python
 # Transformation pipeline
-- Feature scaling and normalization
-- Outlier handling
-- Feature engineering
-- Train-test split (80-20)
+- Feature scaling and normalization (Robust Scaler)
+- Missing value imputation (Simple Imputer)
+- Target variable separation
+- Feature engineering and preprocessing
+- Array conversion for ML compatibility
 ```
 
 **Transformations Applied:**
-- StandardScaler for numerical features
-- Outlier capping using IQR method
-- Feature selection based on importance
-- Data preprocessing for model compatibility
+- **Robust Scaler**: Handles outliers better than StandardScaler
+- **Simple Imputer**: Fills missing values with statistical measures
+- **Target Separation**: Isolates target variable from features
+- **Preprocessing Pipeline**: Systematic data transformation
+- **Array Conversion**: Converts DataFrames to NumPy arrays
+- **Artifact Generation**: Saves preprocessor object and transformed arrays
 
 ### 4. 🤖 Model Training
 
