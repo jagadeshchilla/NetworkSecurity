@@ -171,12 +171,75 @@ graph TD
 
 ### 2. ✅ Data Validation
 
+```mermaid
+graph TD
+    A["📋 Data Validation Config"] --> B["🚀 Initiate Data Validation"]
+    C["📊 Data Ingestion Artifact"] --> D["📁 Ingested"]
+    
+    D --> E["📄 train.csv"]
+    D --> F["📄 test.csv"]
+    
+    B --> G["📖 Read Data"]
+    G --> H["🔢 Validate number of Columns"]
+    H --> I["📊 Is numerical columns exist"]
+    
+    E --> J1["📊 Train Status"]
+    F --> K1["📊 Test Status"]
+    
+    J1 --> L1{"Status"}
+    K1 --> L2{"Status"}
+    
+    L1 -->|False| M1["Columns are missing in training dataframe"]
+    L2 -->|False| M2["Columns are missing in test dataframe"]
+    
+    I --> J2["📊 Train Status"]
+    I --> K2["📊 Test Status"]
+    
+    J2 --> L3{"Status"}
+    K2 --> L4{"Status"}
+    
+    L3 -->|False| M3["Numerical columns are missing in training dataframe"]
+    L4 -->|False| M4["Numerical columns are missing in testing dataframe"]
+    
+    L1 -->|True| N["✅ Validation Status"]
+    L2 -->|True| N
+    L3 -->|True| N
+    L4 -->|True| N
+    
+    N -->|False| O["❌ Validation Error"]
+    N -->|True| P["📊 Drift Status"]
+    
+    P -->|False| Q["🔍 Detect Dataset Drift"]
+    P -->|True| R["📋 Data Validation Artifact"]
+    
+    R --> S["📁 Artifacts"]
+    S --> T["📄 Data Validation Report (JSON)"]
+    
+    T --> U["✅ validation status"]
+    T --> V["📁 valid train file path"]
+    T --> W["📁 valid test file path"]
+    T --> X["❌ invalid train file path"]
+    T --> Y["❌ invalid test file path"]
+    T --> Z["📊 drift report file path"]
+    
+    style A fill:#e8f5e8
+    style B fill:#fff3cd
+    style C fill:#d4edda
+    style N fill:#2196f3
+    style O fill:#f44336
+    style P fill:#ff9800
+    style R fill:#9c27b0
+```
+
+**Data Validation Process:**
+
 ```python
 # Validation checks performed
 - Schema validation (30 features)
 - Data type verification
 - Missing value detection
 - Outlier identification
+- Data drift detection
 ```
 
 **Validation Rules:**
@@ -184,6 +247,8 @@ graph TD
 - No missing values allowed
 - Feature values within expected ranges
 - Target variable (Result) validation
+- Statistical distribution checks
+- Data drift monitoring and reporting
 
 ### 3. 🔄 Data Transformation
 
